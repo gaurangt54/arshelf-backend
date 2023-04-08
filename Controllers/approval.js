@@ -22,7 +22,11 @@ exports.addCustomizationRequest = async (req, res) => {
     html += `Your request for customization of ${product.name} is sent to the Admins.\
     We will revert back with your requests as soon as possible.`
     
-    await mail(to, subject, null, html, null)
+    try
+        {await mail(to, subject, null, html, null)}
+    catch(e){
+        console.log("Emaill Error");
+    }
     
 
     request.save()
@@ -81,7 +85,12 @@ exports.updateCustomizationRequest = async (req, res) =>{
     status === "Accepted" ? html+= "Please check your 'My Requests' Section to add the Customized Product into the Cart" : null;
     status === "Declined" ? html+= "We are sorry for the inconvience caused." : null;
         
-    await mail(to, subject, null, html, null)
+
+    try
+        {await mail(to, subject, null, html, null)}
+    catch(e){
+        console.log("Emaill Error");
+    }
 
     Approval.findOneAndUpdate({_id:approval._id}, {status:status})
     .then(response=>{

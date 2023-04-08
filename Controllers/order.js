@@ -70,7 +70,11 @@ exports.createOrder = async (req,res) => {
     html += `<h4> Payment Method: <b> ${payment} </b></h4>`
     html += "</div>"
 
-    await mail(to, subject, null, html, null)
+    try
+        {await mail(to, subject, null, html, null)}
+    catch(e){
+        console.log("Emaill Error");
+    }
 
     await User.findOneAndUpdate({email:user.email}, {cart:[]})
     .then(response=>{
@@ -139,7 +143,11 @@ exports.updateOrder = async (req, res) =>{
     let html = ""
     html += `Your order of ${order.product.quantity} x ${order.product.name} is ${status}`
 
-    await mail(to, subject, null, html, null)
+    try
+        {await mail(to, subject, null, html, null)}
+    catch(e){
+        console.log("Emaill Error");
+    }
 
     Order.findOneAndUpdate({_id:order._id}, {status:status})
     .then(response=>{
